@@ -1,6 +1,5 @@
 package dev.dotworld.deviceadminsample;
 
-import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,11 +17,17 @@ public class MainActivity extends AppCompatActivity {
     private final int REQUEST_CODE_ENABLE_ADMIN = 1002;
     CheckBox admBtn;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         admBtn = findViewById(R.id.device_admin_btn);
+
+        // Set initial state of checkbox
+        ComponentName deviceAdminSample = new ComponentName(this, DeviceAdmin.class);
+        DevicePolicyManager mDPM = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        admBtn.setChecked(mDPM.isAdminActive(deviceAdminSample));
 
         admBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void enableDeviceAdmin() {
         ComponentName deviceAdminSample = new ComponentName(this, DeviceAdmin.class);
